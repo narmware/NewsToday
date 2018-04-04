@@ -1,3 +1,17 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- dialog no connectivity -->
+    <dimen name="no_connect_img_margin_top">50dp</dimen>
+    <dimen name="no_connect_img_margin_height">150dp</dimen>
+    <dimen name="no_connect_img_margin_width">150dp</dimen>
+    <dimen name="no_connect_bottom_linear_margin">25dp</dimen>
+    <dimen name="no_connect_bottom_text_margin">10dp</dimen>
+
+    <dimen name="normal_textSize">13sp</dimen>
+    <dimen name="small_title_textSize">15sp</dimen>
+    <dimen name="large_title_textSize">20sp</dimen>
+    <dimen name="button_textSize">12sp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="explore_slider_ht">200dp</dimen>
 </resources>
