@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<com.narmware.newstoday.customfonts.MyTextView
+    android:text="News Name"
+    android:background="@color/red_500"
+    android:textColor="@android:color/white"
+    android:padding="5dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+    <com.narmware.newstoday.customfonts.MyTextView
+        android:id="@+id/news_title"
+        android:text="Hello, this is our first news "
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.narmware.newstoday.customfonts.MyTextView
+            android:id="@+id/news_desc"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_weight="1"
+            android:text="Hello, this is our first news "
+            android:textColor="@android:color/black"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/news_img"
+            android:background="@color/red_400"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/grey_300"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></LinearLayout>
+</LinearLayout>

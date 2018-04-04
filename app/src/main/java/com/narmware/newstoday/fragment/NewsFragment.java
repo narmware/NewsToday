@@ -4,11 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.narmware.newstoday.R;
+import com.narmware.newstoday.adapter.NewsAdapter;
+import com.narmware.newstoday.pojo.News;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +37,9 @@ public class NewsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    NewsAdapter newsAdapter;
+    List<News> news;
+    RecyclerView mRecyclerView;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -65,7 +76,74 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false);
+        View view= inflater.inflate(R.layout.fragment_news, container, false);
+        setAdapter(view);
+        return view;
+    }
+
+    public void setAdapter(View v){
+        news=new ArrayList<>();
+        news.add(new News(getResources().getColor(R.color.red_400),"This is first news","This is first news"));
+        news.add(new News(getResources().getColor(R.color.blue_400),"This is second news","This is second news"));
+
+        mRecyclerView = v.findViewById(R.id.recyclerview);
+        newsAdapter = new NewsAdapter(getContext(), news);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(newsAdapter);
+       // mRecyclerView.addOnScrollListener(new CustomScrollListener());
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setFocusable(false);
+
+        newsAdapter.notifyDataSetChanged();
+
+    }
+
+    public class CustomScrollListener extends RecyclerView.OnScrollListener {
+        public CustomScrollListener() {
+        }
+
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            switch (newState) {
+                case RecyclerView.SCROLL_STATE_IDLE:
+                    //System.out.println("The RecyclerView is not scrolling");
+                    break;
+                case RecyclerView.SCROLL_STATE_DRAGGING:
+                    //System.out.println("Scrolling now");
+                    break;
+                case RecyclerView.SCROLL_STATE_SETTLING:
+                    //System.out.println("Scroll Settling");
+                    break;
+
+            }
+
+        }
+
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            //for horizontal scrolling
+           /* if (dx > 0) {
+                System.out.println("Scrolled Right");
+            } else if (dx < 0) {
+                System.out.println("Scrolled Left");
+            } else {
+                System.out.println("No Horizontal Scrolled");
+            }*/
+
+            //for vertical scrolling
+            if (dy > 0) {
+                System.out.println("Scrolled Downwards");
+
+            }
+
+            else if (dy < 0) {
+                System.out.println("Scrolled Upwards");
+            }
+
+            else {
+                System.out.println("No Vertical Scrolled");
+            }
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
