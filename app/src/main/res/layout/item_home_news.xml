@@ -1,37 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout android:orientation="vertical"
     android:background="@android:color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/news_img"
         android:layout_weight="1"
+        android:background="@color/amber_400"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_margin="4dp"
+        >
+    <LinearLayout
+        android:layout_above="@+id/rltv_like"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <com.narmware.newstoday.customfonts.MyTextView
         android:id="@+id/news_title"
-        android:text=""
-        android:textSize="14dp"
-        android:padding="5dp"
+        android:text="First news"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        <com.narmware.newstoday.customfonts.MyTextView
+            android:id="@+id/news_date"
+            android:text="03-03-2018"
+            android:textSize="12dp"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     <com.narmware.newstoday.customfonts.MyTextView
         android:id="@+id/news_desc"
         android:maxLines="5"
+        android:padding="5dp"
+        android:textSize="16sp"
         android:ellipsize="end"
-        android:text=""
+        android:text="This is my first news"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rltv_like"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <com.narmware.newstoday.customfonts.MyTextView
+                android:id="@+id/txt_like"
+                android:layout_centerVertical="true"
+                android:maxLines="3"
+                android:layout_alignParentLeft="true"
+                style="@style/textStyle"
+                android:ellipsize="end"
+                android:layout_weight="1"
+                android:text="3 likes"
+                android:textColor="@android:color/black"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.like.LikeButton
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    app:icon_type="heart"
+                    app:circle_start_color="@color/colorPrimary"
+                    app:like_drawable="@drawable/heart_on"
+                    app:unlike_drawable="@drawable/heart_off"
+                    app:dots_primary_color="@color/colorAccent"
+                    app:dots_secondary_color="@color/colorPrimary"
+                    app:circle_end_color="@color/colorAccent"
+                    app:icon_size="20dp"
+                    app:liked="true"
+                    app:anim_scale_factor="2"
+                    app:is_enabled="true"
+                    />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 </LinearLayout>

@@ -7,9 +7,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.narmware.newstoday.R;
+import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.fragment.NewsFragment;
 
-public class DemoActivity extends AppCompatActivity implements NewsFragment.OnFragmentInteractionListener{
+public class DemoActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener{
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -19,10 +20,12 @@ public class DemoActivity extends AppCompatActivity implements NewsFragment.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
 
+        getSupportActionBar().hide();
         fragmentManager=getSupportFragmentManager();
         fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,new NewsFragment());
+        fragmentTransaction.add(R.id.fragment_container,new HomeFragment());
         fragmentTransaction.commit();
+
     }
 
     @Override
