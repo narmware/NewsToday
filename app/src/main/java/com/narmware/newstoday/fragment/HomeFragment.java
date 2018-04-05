@@ -15,6 +15,10 @@ import android.widget.Button;
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+<<<<<<< HEAD
+=======
+
+>>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeNewsAdapter;
 import com.narmware.newstoday.pojo.HomeNews;

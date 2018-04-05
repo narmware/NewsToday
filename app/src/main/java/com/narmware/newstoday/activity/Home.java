@@ -19,9 +19,15 @@ import android.widget.ListView;
 
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeFragmentPagerAdapter;
+<<<<<<< HEAD
 import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.fragment.NewsFragment;
+=======
+import com.narmware.newstoday.adapter.HomeMenuAdapter;
+import com.narmware.newstoday.fragment.MainFragment;
+import com.narmware.newstoday.pojo.HomeMenu;
+>>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
 
 import java.util.ArrayList;
 
@@ -30,7 +36,8 @@ public class Home extends AppCompatActivity
 
 
 
-    private ListView mCatList,mStaticMenuList;
+  private  ListView mListView;
+    private ArrayList<HomeMenu> mMenuList =new ArrayList<>();
 
 
 
@@ -41,6 +48,10 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -64,7 +75,38 @@ public class Home extends AppCompatActivity
 
         TabLayout tabLayout =findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+<<<<<<< HEAD
         //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+=======
+
+
+
+
+        HomeMenu mHomeMenu=new HomeMenu("Home",R.drawable.ic_menu_gallery);
+        HomeMenu mStaticMenu1=new HomeMenu("Notification",R.drawable.ic_notifications);
+        HomeMenu mStaticMenu2=new HomeMenu("Login",R.drawable.ic_lock);
+        HomeMenu mStaticMenu3=new HomeMenu("Settings",R.drawable.ic_settings);
+
+
+        mMenuList.add(mHomeMenu);
+        mMenuList.add(mStaticMenu1);
+        mMenuList.add(mStaticMenu2);
+        mMenuList.add(mStaticMenu3);
+
+
+
+
+        HomeMenuAdapter mAdapter=new HomeMenuAdapter(this,mMenuList);
+        mListView=findViewById(R.id.mListView);
+        mListView.setAdapter(mAdapter);
+
+
+
+
+
+
+
+>>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
     }
 
     @Override
@@ -103,7 +145,7 @@ public class Home extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    /*    int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
@@ -117,7 +159,7 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
