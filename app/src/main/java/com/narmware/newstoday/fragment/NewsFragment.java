@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,14 +90,17 @@ public class NewsFragment extends Fragment {
     public void setAdapter(View v){
         news=new ArrayList<>();
         if(mId==1) {
-            news.add(new News(getResources().getColor(R.color.red_400), "This is first news", "This is first news"));
-            news.add(new News(getResources().getColor(R.color.blue_400), "This is second news", "This is second news"));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_xf1FJ_OnwOSJqN1wY397SLNAr70HWo7oEGHdEi0Q1__A5SgV9g", "This is first news", "This is first news"));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXDoUVQJUZsdOsPoxGyrTfeo-IeHmotP1gxXWcfiLwHhJAI8o", "This is second news", "This is second news"));
         }
         if(mId==2) {
-            news.add(new News(getResources().getColor(R.color.amber_300), "This is sports news", "This is sports news"));
-            news.add(new News(getResources().getColor(R.color.purple_400), "This is cricket news", "This is cricket news"));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTObyPteqcWpkYDatiuFWmIW13HjBcAG6fMVm3YrRxmmx39OoPAvA", "This is Football news", "This is Football news"));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8ooOXgDLIyC7afHFzsa0CUBTcKodY3Lr_yaYdODAB-0-Dxcc56g", "This is cricket news", "This is cricket news"));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTObyPteqcWpkYDatiuFWmIW13HjBcAG6fMVm3YrRxmmx39OoPAvA", "This is Football news", "This is Football news"));
+
         }
 
+        SnapHelper snapHelper = new LinearSnapHelper();
         mRecyclerView = v.findViewById(R.id.recyclerview);
         newsAdapter = new NewsAdapter(getContext(), news);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -105,7 +110,7 @@ public class NewsFragment extends Fragment {
        // mRecyclerView.addOnScrollListener(new CustomScrollListener());
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setFocusable(false);
-
+       // snapHelper.attachToRecyclerView(mRecyclerView);
         newsAdapter.notifyDataSetChanged();
 
     }

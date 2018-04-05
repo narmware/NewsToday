@@ -17,6 +17,7 @@ import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
 import com.narmware.newstoday.pojo.HomeNews;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,14 @@ public class HomeNewsAdapter extends BaseAdapter
 
         final MyTextView mTxtLike=itemView.findViewById(R.id.txt_like);
 
-        mImgNews.setBackgroundColor(homeNews.get(position).getNews_color());
+          Picasso.with(mContext)
+                .load(homeNews.get(position).getImg_path())
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(mImgNews);
+
+        //mImgNews.setBackgroundColor(homeNews.get(position).getNews_color());
         mTxtTitle.setText(homeNews.get(position).getNews_title());
         mTxtDesc.setText(homeNews.get(position).getNews_desc());
         mTxtName.setText("# "+homeNews.get(position).getNews_name());
