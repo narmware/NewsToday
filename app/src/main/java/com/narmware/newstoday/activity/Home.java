@@ -19,12 +19,14 @@ import android.widget.ListView;
 
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeFragmentPagerAdapter;
+import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.fragment.MainFragment;
+import com.narmware.newstoday.fragment.NewsFragment;
 
 import java.util.ArrayList;
 
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener,NewsFragment.OnFragmentInteractionListener {
 
 
 
@@ -39,14 +41,6 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,25 +51,20 @@ public class Home extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        ViewPager viewPager = findViewById(R.id.container);
+
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(),Home.this);
+        adapter.addFragment(new HomeFragment(),"Home");
+        adapter.addFragment(NewsFragment.newInstance(1),"News");
+        adapter.addFragment(NewsFragment.newInstance(2),"Sports");
+        adapter.addFragment(NewsFragment.newInstance(1),"Political");
 
-        adapter.addFragment(new MainFragment(),"Home");
-        adapter.addFragment(new MainFragment(),"Sports");
         // Find the view pager that will allow the user to swipe between fragments
-        ViewPager viewPager = findViewById(R.id.viewpager);
-
         viewPager.setAdapter(adapter);
-           /*mCatList.setAdapter(adapter);*/
+
         TabLayout tabLayout =findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-
-
-
-
-
-
-
+        //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     @Override
@@ -88,7 +77,7 @@ public class Home extends AppCompatActivity
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
@@ -108,7 +97,7 @@ public class Home extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

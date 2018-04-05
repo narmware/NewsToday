@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.narmware.newstoday">
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
-        android:allowBackup="true"
         android:name=".MyApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -12,24 +14,18 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.SplashActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-<<<<<<< HEAD
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.Home"
-            android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
-=======
-        <activity android:name=".activity.DemoActivity">
->>>>>>> cca36e149223944e0136eaec54eb7a970024ee7a
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.DemoActivity"></activity>
+        <activity android:name=".activity.DetailedNewsActivity"></activity>
     </application>
 
 </manifest>

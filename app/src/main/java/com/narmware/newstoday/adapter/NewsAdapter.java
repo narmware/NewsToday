@@ -2,6 +2,7 @@ package com.narmware.newstoday.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.narmware.newstoday.R;
+import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
 import com.narmware.newstoday.pojo.News;
 
@@ -41,8 +43,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext, mItem.getNews_title(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, mItem.getNews_title(), Toast.LENGTH_SHORT).show();
 
+                    Intent intent=new Intent(mContext, DetailedNewsActivity.class);
+                    intent.putExtra("news_name","News name");
+                    mContext.startActivity(intent);
                 }
             });
         }

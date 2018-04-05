@@ -11,12 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-<<<<<<< HEAD
-=======
+
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
->>>>>>> f12884ae9c0a9d105dad33f925635611c791040a
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeNewsAdapter;
 import com.narmware.newstoday.pojo.HomeNews;
@@ -103,16 +101,16 @@ public class HomeFragment extends Fragment {
     public void setAdapter()
     {
         homeNews=new ArrayList<>();
-        homeNews.add(new HomeNews(getResources().getColor(R.color.amber_300),"Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
+        homeNews.add(new HomeNews(getResources().getColor(R.color.pink_300),"Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
-                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software."));
+                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 1"));
         homeNews.add(new HomeNews(getResources().getColor(R.color.red_300),"Vrushali completed her task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
-                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software."));
+                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 2"));
 
         homeNews.add(new HomeNews(getResources().getColor(R.color.blue_300),"Suraj completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
-                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software."));
+                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 3"));
         HomeNewsAdapter homeNewsAdapter=new HomeNewsAdapter(homeNews,getContext());
         mNewsList.setAdapter(homeNewsAdapter);
     }

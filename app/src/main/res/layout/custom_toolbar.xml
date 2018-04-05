@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_alignParentTop="true"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/rltv_back"
+        android:layout_width="70dp"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:minWidth="0dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            android:layout_height="match_parent"
+            tools:ignore="VectorDrawableCompat" />
+
+    </LinearLayout>
+
+    <com.narmware.newstoday.customfonts.MyTextView
+        android:id="@+id/title"
+        android:layout_toRightOf="@id/rltv_back"
+        android:textColor="@android:color/white"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

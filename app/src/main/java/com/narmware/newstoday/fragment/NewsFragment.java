@@ -34,12 +34,10 @@ import java.util.List;
 public class NewsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String NEWS_ID = "news_id";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mId;
 
     private OnFragmentInteractionListener mListener;
     NewsAdapter newsAdapter;
@@ -56,16 +54,14 @@ public class NewsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment NewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(String param1, String param2) {
+    public static NewsFragment newInstance(int id) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(NEWS_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,8 +70,7 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mId = getArguments().getInt(NEWS_ID);
         }
     }
 
@@ -92,8 +87,14 @@ public class NewsFragment extends Fragment {
 
     public void setAdapter(View v){
         news=new ArrayList<>();
-        news.add(new News(getResources().getColor(R.color.red_400),"This is first news","This is first news"));
-        news.add(new News(getResources().getColor(R.color.blue_400),"This is second news","This is second news"));
+        if(mId==1) {
+            news.add(new News(getResources().getColor(R.color.red_400), "This is first news", "This is first news"));
+            news.add(new News(getResources().getColor(R.color.blue_400), "This is second news", "This is second news"));
+        }
+        if(mId==2) {
+            news.add(new News(getResources().getColor(R.color.amber_300), "This is sports news", "This is sports news"));
+            news.add(new News(getResources().getColor(R.color.purple_400), "This is cricket news", "This is cricket news"));
+        }
 
         mRecyclerView = v.findViewById(R.id.recyclerview);
         newsAdapter = new NewsAdapter(getContext(), news);
