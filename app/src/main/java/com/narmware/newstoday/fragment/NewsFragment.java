@@ -1,16 +1,21 @@
 package com.narmware.newstoday.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.NewsAdapter;
 import com.narmware.newstoday.pojo.News;
@@ -40,6 +45,8 @@ public class NewsFragment extends Fragment {
     NewsAdapter newsAdapter;
     List<News> news;
     RecyclerView mRecyclerView;
+    RequestQueue mVolleyRequest;
+    Dialog mNoConnectionDialog;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -78,6 +85,8 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_news, container, false);
         setAdapter(view);
+        mVolleyRequest = Volley.newRequestQueue(getContext());
+
         return view;
     }
 
@@ -184,4 +193,104 @@ public class NewsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+/*
+    private void GetSharedPhotoBook() {
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setMessage("getting details ...");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        HashMap<String,String> param = new HashMap();
+        param.put(Constants.USER_ID,SharedPreferencesHelper.getUserId(getContext()));
+
+        String url= SupportFunctions.appendParam(MyApplication.URL_SHARED_ALBUM,param);
+
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+                // The third parameter Listener overrides the method onResponse() and passes
+                //JSONObject as a parameter
+                new Response.Listener<JSONObject>() {
+
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try
+                        {
+                            //getting test master array
+                            // testMasterDetails = testMasterArray.toString();
+
+                            Log.e("sharedphoto Json_string",response.toString());
+                            Gson gson = new Gson();
+
+                            SharedPhotoResponse photoResponse= gson.fromJson(response.toString(), SharedPhotoResponse.class);
+                            SharedPhoto[] photo=photoResponse.getData();
+                            for(SharedPhoto item:photo)
+                            {
+                                mPhotoItems.add(item);
+                                Log.e("Featured img title",item.getPhoto_title());
+                                Log.e("Featured img size",mPhotoItems.size()+"");
+
+                            }
+                            if(mPhotoItems.size()==0)
+                            {
+                                mEmptyLinear.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                mEmptyLinear.setVisibility(View.INVISIBLE);
+                            }
+                            mAdapter.notifyDataSetChanged();
+
+                            // TestMasterPojo[] testMasterPojo= gson.fromJson(testMasterDetails, TestMasterPojo[].class);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            dialog.dismiss();
+                        }
+                        dialog.dismiss();
+                    }
+                },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley", "Test Error");
+                        showNoConnectionDialog();
+                        dialog.dismiss();
+
+                    }
+                }
+        );
+        mVolleyRequest.add(obreq);
+    }
+*/
+
+    private void showNoConnectionDialog() {
+        mNoConnectionDialog = new Dialog(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        mNoConnectionDialog.setContentView(R.layout.dialog_noconnectivity);
+        mNoConnectionDialog.setCancelable(false);
+        mNoConnectionDialog.show();
+
+        Button exit = mNoConnectionDialog.findViewById(R.id.dialog_no_connec_exit);
+        Button tryAgain = mNoConnectionDialog.findViewById(R.id.dialog_no_connec_try_again);
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AppCompatActivity act = (AppCompatActivity) getContext();
+                act.finish();
+            }
+        });
+
+        tryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mNoConnectionDialog.dismiss();
+            }
+        });
+    }
+
 }
+
