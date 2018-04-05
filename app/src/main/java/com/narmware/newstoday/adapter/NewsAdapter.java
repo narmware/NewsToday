@@ -14,6 +14,7 @@ import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
 import com.narmware.newstoday.pojo.News;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -71,13 +72,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         News frame = news.get(position);
 
 
-       /* Picasso.with(mContext)
-                .load(frame.getPhoto_path())
+        Picasso.with(mContext)
+                .load(frame.getImg_path())
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
-                .into(holder.mImgFrame);*/
-        holder.mImgFrame.setBackgroundColor(frame.getNews_color());
+                .into(holder.mImgFrame);
+        //holder.mImgFrame.setBackgroundColor(frame.getNews_color());
         holder.mthumb_title.setText(frame.getNews_title());
         holder.mthumb_Desc.setText(frame.getNews_desc());
         holder.mItem=frame;

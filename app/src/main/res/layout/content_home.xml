@@ -17,7 +17,7 @@
             android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/teal_400"
+            android:background="@color/red_700"
             app:tabIndicatorColor="@android:color/white"
             style="@style/small_title_textStyle"
             app:tabMode="fixed"

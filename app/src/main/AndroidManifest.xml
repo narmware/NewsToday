@@ -14,37 +14,26 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.SplashActivity"
-<<<<<<< HEAD
             android:theme="@style/AppTheme.NoActionBar"></activity>
-=======
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            >
 
-        </activity>
 
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
         <activity
             android:name=".activity.Home"
             android:theme="@style/AppTheme.NoActionBar">
-<<<<<<< HEAD
-=======
 
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity android:name=".activity.DemoActivity"></activity>
         <activity android:name=".activity.DetailedNewsActivity"></activity>
-=======
+
 
         <activity android:name=".activity.DemoActivity">
-
         </activity>
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
     </application>
 
 </manifest>

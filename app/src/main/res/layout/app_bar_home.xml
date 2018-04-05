@@ -27,10 +27,5 @@
         android:layout_height="match_parent">
 
     <include layout="@layout/content_home" />
-
-<<<<<<< HEAD
     </LinearLayout>
 </RelativeLayout>
-=======
-</android.support.design.widget.CoordinatorLayout>
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f

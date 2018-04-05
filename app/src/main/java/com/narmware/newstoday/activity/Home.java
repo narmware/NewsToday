@@ -19,15 +19,12 @@ import android.widget.ListView;
 
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeFragmentPagerAdapter;
-<<<<<<< HEAD
 import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.fragment.NewsFragment;
-=======
 import com.narmware.newstoday.adapter.HomeMenuAdapter;
 import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.pojo.HomeMenu;
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
 
 import java.util.ArrayList;
 
@@ -48,10 +45,6 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,9 +68,8 @@ public class Home extends AppCompatActivity
 
         TabLayout tabLayout =findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-<<<<<<< HEAD
+
         //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-=======
 
 
 
@@ -100,13 +92,6 @@ public class Home extends AppCompatActivity
         mListView=findViewById(R.id.mListView);
         mListView.setAdapter(mAdapter);
 
-
-
-
-
-
-
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
     }
 
     @Override

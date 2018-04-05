@@ -15,10 +15,7 @@ import android.widget.Button;
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-<<<<<<< HEAD
-=======
 
->>>>>>> c6bdb43222b3d579f9852fd49c023ee531f7706f
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeNewsAdapter;
 import com.narmware.newstoday.pojo.HomeNews;
@@ -105,14 +102,14 @@ public class HomeFragment extends Fragment {
     public void setAdapter()
     {
         homeNews=new ArrayList<>();
-        homeNews.add(new HomeNews(getResources().getColor(R.color.pink_300),"Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
+        homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-HKO8qwCgBNGEdbxoW7z51BIDRd8ni1gbaJORgO8MbWX9DHRB","Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
                 "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 1"));
-        homeNews.add(new HomeNews(getResources().getColor(R.color.red_300),"Vrushali completed her task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
+        homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIlQxMDgw62pUFpwsuBaEzFDCh2773zvEdicGuhGAe2Odpw-a74Q","Vrushali completed her task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
                 "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 2"));
 
-        homeNews.add(new HomeNews(getResources().getColor(R.color.blue_300),"Suraj completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
+        homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKzfLd87SIls2APD7csxZhVBOb-B_VNGfnXlVJ6ufmAjPsCOmB","Suraj completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
                 "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 3"));
         HomeNewsAdapter homeNewsAdapter=new HomeNewsAdapter(homeNews,getContext());
