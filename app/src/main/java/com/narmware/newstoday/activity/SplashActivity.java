@@ -1,4 +1,4 @@
-package com.narmware.newstoday;
+package com.narmware.newstoday.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.narmware.newstoday.R;
 
 public class SplashActivity extends AppCompatActivity {
 

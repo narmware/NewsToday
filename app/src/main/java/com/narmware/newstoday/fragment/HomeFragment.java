@@ -84,6 +84,11 @@ public class HomeFragment extends Fragment {
 
     private void init(View view) {
         ButterKnife.bind(this,view);
+        setAdapter();
+    }
+
+    public void setAdapter()
+    {
         homeNews=new ArrayList<>();
         homeNews.add(new HomeNews(getResources().getColor(R.color.amber_300),"Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
@@ -97,7 +102,6 @@ public class HomeFragment extends Fragment {
                 "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software."));
         HomeNewsAdapter homeNewsAdapter=new HomeNewsAdapter(homeNews,getContext());
         mNewsList.setAdapter(homeNewsAdapter);
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
