@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.pojo.HomeMenu;
@@ -44,7 +45,7 @@ public class HomeMenuAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup)
+    public View getView(final int position, View view, ViewGroup viewGroup)
     {
         LayoutInflater layoutInflater=LayoutInflater.from(mContext);
         View rowView=layoutInflater.inflate(R.layout.menulist,null);
@@ -55,7 +56,17 @@ public class HomeMenuAdapter extends BaseAdapter
         mTextView.setText(mMenuList.get(position).getTitle());
         mImageView.setImageResource(mMenuList.get(position).getImage());
 
+       rowView.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Toast.makeText(mContext,"You Clicked"+mMenuList.get(position).getTitle(),Toast.LENGTH_LONG).show();
+
+
+           }
+       });
 
         return rowView;
+
     }
 }
