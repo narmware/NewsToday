@@ -16,19 +16,21 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-<<<<<<< HEAD
+
         <activity
             android:name=".activity.Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
-=======
-        <activity android:name=".activity.DemoActivity">
->>>>>>> cca36e149223944e0136eaec54eb7a970024ee7a
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.DemoActivity">
+
         </activity>
     </application>
 

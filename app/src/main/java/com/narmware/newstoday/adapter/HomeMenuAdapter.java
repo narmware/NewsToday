@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.narmware.newstoday.R;
 import com.narmware.newstoday.pojo.HomeMenu;
 
 import java.util.ArrayList;
@@ -41,11 +44,18 @@ public class HomeMenuAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup)
-    {/*
+    public View getView(int position, View view, ViewGroup viewGroup)
+    {
         LayoutInflater layoutInflater=LayoutInflater.from(mContext);
-        View rowView=layoutInflater.inflate()
-*/
-        return null;
+        View rowView=layoutInflater.inflate(R.layout.menulist,null);
+
+        TextView mTextView=rowView.findViewById(R.id.mTitle);
+        ImageView mImageView=rowView.findViewById(R.id.mIcon);
+
+        mTextView.setText(mMenuList.get(position).getTitle());
+        mImageView.setImageResource(mMenuList.get(position).getImage());
+
+
+        return rowView;
     }
 }

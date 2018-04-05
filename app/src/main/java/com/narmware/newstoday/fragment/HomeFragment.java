@@ -11,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-<<<<<<< HEAD
-=======
+
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
->>>>>>> f12884ae9c0a9d105dad33f925635611c791040a
+
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeNewsAdapter;
 import com.narmware.newstoday.pojo.HomeNews;
