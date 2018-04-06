@@ -1,6 +1,7 @@
 package com.narmware.newstoday.adapter;
 
 import android.app.Activity;
+import android.support.v4.view.GravityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.narmware.newstoday.R;
+import com.narmware.newstoday.activity.Home;
+import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.pojo.HomeMenu;
 
 import java.util.ArrayList;
@@ -55,7 +58,12 @@ public class HomeMenuAdapter extends BaseAdapter
         mTextView.setText(mMenuList.get(position).getTitle());
         mImageView.setImageResource(mMenuList.get(position).getImage());
 
-
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Home.drawer.closeDrawer(GravityCompat.START);
+            }
+        });
         return rowView;
     }
 }

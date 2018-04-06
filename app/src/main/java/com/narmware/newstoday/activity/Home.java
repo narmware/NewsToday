@@ -28,6 +28,8 @@ import com.narmware.newstoday.pojo.HomeMenu;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener,NewsFragment.OnFragmentInteractionListener {
 
@@ -35,6 +37,7 @@ public class Home extends AppCompatActivity
 
   private  ListView mListView;
     private ArrayList<HomeMenu> mMenuList =new ArrayList<>();
+   public static DrawerLayout drawer;
 
 
 
@@ -46,7 +49,7 @@ public class Home extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -96,7 +99,6 @@ public class Home extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
