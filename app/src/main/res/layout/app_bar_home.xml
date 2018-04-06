@@ -27,5 +27,12 @@
         android:layout_height="match_parent">
 
     <include layout="@layout/content_home" />
+<<<<<<< HEAD
+
     </LinearLayout>
 </RelativeLayout>
+
+=======
+    </LinearLayout>
+</RelativeLayout>
+>>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
