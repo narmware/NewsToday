@@ -1,46 +1,41 @@
 package com.narmware.newstoday.activity;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.narmware.newstoday.MyApplication;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeFragmentPagerAdapter;
-<<<<<<< HEAD
 
 import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.fragment.NewsFragment;
 
 import com.narmware.newstoday.adapter.HomeMenuAdapter;
-import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.pojo.HomeMenu;
-
-=======
-import com.narmware.newstoday.fragment.HomeFragment;
-import com.narmware.newstoday.fragment.MainFragment;
-import com.narmware.newstoday.fragment.NewsFragment;
-import com.narmware.newstoday.adapter.HomeMenuAdapter;
-import com.narmware.newstoday.fragment.MainFragment;
-import com.narmware.newstoday.pojo.HomeMenu;
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener,NewsFragment.OnFragmentInteractionListener {
@@ -50,21 +45,15 @@ public class Home extends AppCompatActivity
   private  ListView mListView;
     private ArrayList<HomeMenu> mMenuList =new ArrayList<>();
    public static DrawerLayout drawer;
-
-
-
+    public static ViewPager viewPager;
+    RequestQueue mVolleyRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
+        mVolleyRequest = Volley.newRequestQueue(Home.this);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,7 +64,7 @@ public class Home extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ViewPager viewPager = findViewById(R.id.container);
+        viewPager = findViewById(R.id.container);
 
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(),Home.this);
         adapter.addFragment(new HomeFragment(),"Home");
@@ -88,20 +77,16 @@ public class Home extends AppCompatActivity
 
         TabLayout tabLayout =findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+        //viewPager.setCurrentItem(2);
         //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-<<<<<<< HEAD
-
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
 
 
 
 
         HomeMenu mHomeMenu=new HomeMenu("Home",R.drawable.ic_menu_gallery);
-        HomeMenu mStaticMenu1=new HomeMenu("Notification",R.drawable.ic_notifications);
-        HomeMenu mStaticMenu2=new HomeMenu("Login",R.drawable.ic_lock);
-        HomeMenu mStaticMenu3=new HomeMenu("Settings",R.drawable.ic_settings);
+        HomeMenu mStaticMenu1=new HomeMenu("News",R.drawable.ic_notifications);
+        HomeMenu mStaticMenu2=new HomeMenu("Sports",R.drawable.ic_lock);
+        HomeMenu mStaticMenu3=new HomeMenu("Political",R.drawable.ic_settings);
 
 
         mMenuList.add(mHomeMenu);
@@ -115,16 +100,6 @@ public class Home extends AppCompatActivity
         HomeMenuAdapter mAdapter=new HomeMenuAdapter(this,mMenuList);
         mListView=findViewById(R.id.mListView);
         mListView.setAdapter(mAdapter);
-
-<<<<<<< HEAD
-
-
-
-
-
-
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
     }
 
     @Override
@@ -187,4 +162,5 @@ public class Home extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }

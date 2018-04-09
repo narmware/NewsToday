@@ -14,49 +14,29 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.SplashActivity"
-<<<<<<< HEAD
+
             android:theme="@style/AppTheme.NoActionBar">
 
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-=======
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-            >
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
+
+            </activity>
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
         <activity
             android:name=".activity.Home"
             android:theme="@style/AppTheme.NoActionBar">
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
 
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
         <activity android:name=".activity.DemoActivity"></activity>
         <activity android:name=".activity.DetailedNewsActivity"></activity>
 
-
-        <activity android:name=".activity.DemoActivity">
-        </activity>
-<<<<<<< HEAD
-
-=======
->>>>>>> 683dd65688a06181d832f02b5f3c3b81b9c541b6
     </application>
 
 </manifest>
