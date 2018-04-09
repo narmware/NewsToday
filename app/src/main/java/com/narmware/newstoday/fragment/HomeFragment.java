@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
     Excpert excpert;
     Title title;
     String date;
-    String image_url;
+    String image_url,link;
     ArrayList<FeaturedImage> mFeaturedImages;
 
 
@@ -223,6 +223,7 @@ public class HomeFragment extends Fragment {
 
                             }*/
 
+                           mCategoryNews.clear();
                             for(int i=0;i<jsonArray.length();i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -309,8 +310,9 @@ public class HomeFragment extends Fragment {
                             excpert = mCategoryNews.get(pos).getExcpert();
                                 title = mCategoryNews.get(pos).getTitle();
                                 date = mCategoryNews.get(pos).getDate();
+                                link=mCategoryNews.get(pos).getLink();
 
-                                homeNews.add(new HomeNews(image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                                homeNews.add(new HomeNews(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
                                 Log.e("Json cat data", mCategoryNews.get(pos).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(pos).getDate() + "  " + mCategoryNews.get(pos).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(pos).getFeatured_media());
 
                                 homeNewsAdapter.notifyDataSetChanged();

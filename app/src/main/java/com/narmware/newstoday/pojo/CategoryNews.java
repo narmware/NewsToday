@@ -7,7 +7,7 @@ package com.narmware.newstoday.pojo;
 public class CategoryNews {
     int id;
     int featured_media;
-    String date,slug;
+    String date,slug,link;
     Excpert excerpt;
     Title title;
 
@@ -57,5 +57,21 @@ public class CategoryNews {
 
     public void setFeatured_media(int featured_media) {
         this.featured_media = featured_media;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public Excpert getExcerpt() {
+        return excerpt;
+    }
+
+    public void setExcerpt(Excpert excerpt) {
+        this.excerpt = excerpt;
     }
 }

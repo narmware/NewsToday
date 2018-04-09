@@ -17,6 +17,7 @@ import com.like.OnLikeListener;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
+import com.narmware.newstoday.helpers.Constants;
 import com.narmware.newstoday.pojo.HomeNews;
 import com.squareup.picasso.Picasso;
 
@@ -86,10 +87,11 @@ public class HomeNewsAdapter extends BaseAdapter
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext,homeNews.get(position).getNews_title(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,homeNews.get(position).getNews_link(),Toast.LENGTH_SHORT).show();
 
                 Intent intent=new Intent(mContext, DetailedNewsActivity.class);
-                intent.putExtra("news_name",homeNews.get(position).getNews_name());
+                intent.putExtra(Constants.NEWS_NAME,homeNews.get(position).getNews_name());
+                intent.putExtra(Constants.NEWS_LINK,homeNews.get(position).getNews_link());
                 mContext.startActivity(intent);
             }
         });

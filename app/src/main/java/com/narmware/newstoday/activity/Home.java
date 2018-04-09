@@ -33,9 +33,16 @@ import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.fragment.NewsFragment;
 
 import com.narmware.newstoday.adapter.HomeMenuAdapter;
+import com.narmware.newstoday.helpers.SupportFunctions;
+import com.narmware.newstoday.pojo.Category;
+import com.narmware.newstoday.pojo.CategoryNews;
 import com.narmware.newstoday.pojo.HomeMenu;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener,NewsFragment.OnFragmentInteractionListener {
@@ -47,6 +54,10 @@ public class Home extends AppCompatActivity
    public static DrawerLayout drawer;
     public static ViewPager viewPager;
     RequestQueue mVolleyRequest;
+    ArrayList<Category> categories=new ArrayList<>();
+    HomeFragmentPagerAdapter tabAdapter;
+    TabLayout tabLayout;
+    HomeMenuAdapter homeMenuAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +65,8 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mVolleyRequest = Volley.newRequestQueue(Home.this);
+
+        GetAllCategories();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -66,40 +79,23 @@ public class Home extends AppCompatActivity
 
         viewPager = findViewById(R.id.container);
 
-        HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(),Home.this);
-        adapter.addFragment(new HomeFragment(),"Home");
-        adapter.addFragment(NewsFragment.newInstance(1),"News");
-        adapter.addFragment(NewsFragment.newInstance(2),"Sports");
-        adapter.addFragment(NewsFragment.newInstance(1),"Political");
+        tabAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(),Home.this);
+        tabAdapter.addFragment(new HomeFragment(),"Home");
 
         // Find the view pager that will allow the user to swipe between fragments
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(tabAdapter);
 
-        TabLayout tabLayout =findViewById(R.id.sliding_tabs);
+        tabLayout =findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         //viewPager.setCurrentItem(2);
-        //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-
-
 
         HomeMenu mHomeMenu=new HomeMenu("Home",R.drawable.ic_menu_gallery);
-        HomeMenu mStaticMenu1=new HomeMenu("News",R.drawable.ic_notifications);
-        HomeMenu mStaticMenu2=new HomeMenu("Sports",R.drawable.ic_lock);
-        HomeMenu mStaticMenu3=new HomeMenu("Political",R.drawable.ic_settings);
-
 
         mMenuList.add(mHomeMenu);
-        mMenuList.add(mStaticMenu1);
-        mMenuList.add(mStaticMenu2);
-        mMenuList.add(mStaticMenu3);
 
-
-
-
-        HomeMenuAdapter mAdapter=new HomeMenuAdapter(this,mMenuList);
+        homeMenuAdapter=new HomeMenuAdapter(this,mMenuList);
         mListView=findViewById(R.id.mListView);
-        mListView.setAdapter(mAdapter);
+        mListView.setAdapter(homeMenuAdapter);
     }
 
     @Override
@@ -162,5 +158,79 @@ public class Home extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    private void GetAllCategories() {
+        final ProgressDialog dialog = new ProgressDialog(Home.this);
+        dialog.setMessage("getting details ...");
+        dialog.setCancelable(false);
+        //dialog.show();
+
+        String url= MyApplication.URL_ALL_CATEGORIES;
+        Log.e("Url",url);
+
+        JsonArrayRequest obreq = new JsonArrayRequest(Request.Method.GET,MyApplication.URL_ALL_CATEGORIES,null,
+                // The third parameter Listener overrides the method onResponse() and passes
+                //JSONObject as a parameter
+                new Response.Listener<JSONArray>() {
+
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try
+                        {
+                            //getting test master array
+                            // testMasterDetails = testMasterArray.toString();
+
+                            Log.e("Category Json_string",response.toString());
+                            Gson gson = new Gson();
+
+                            JSONArray jsonArray=response;
+
+                           /* for(CategoryNews item:jsonArray) {
+
+                            }*/
+
+                            for(int i=0;i<jsonArray.length();i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Log.e("Category obj", jsonObject.toString());
+
+                                Category category= gson.fromJson(jsonObject.toString(),Category.class);
+                                Log.e("Json Category",category.getName()+"");
+
+                                if(category.getCount()!=0) {
+                                    tabAdapter.addFragment(NewsFragment.newInstance(category.getId()), category.getName());
+
+                                    HomeMenu homeMenu = new HomeMenu(category.getName(), R.drawable.ic_menu_gallery);
+                                    mMenuList.add(homeMenu);
+                                }
+                            }
+                            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+                            tabAdapter.notifyDataSetChanged();
+                            homeMenuAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            //dialog.dismiss();
+                        }
+                       // dialog.dismiss();
+                    }
+                },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley", "Test Error");
+
+                        //dialog.dismiss();
+
+                    }
+                }
+        );
+        mVolleyRequest.add(obreq);
+    }
+
 
 }

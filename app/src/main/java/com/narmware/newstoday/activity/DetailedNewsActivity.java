@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.customfonts.MyTextView;
+import com.narmware.newstoday.helpers.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
     @BindView(R.id.title)protected MyTextView mTxtTitle;
     @BindView(R.id.webview)protected WebView mWebView;
     protected ProgressDialog mProgress;
-    String news_name;
+    String news_name,news_link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,8 @@ public class DetailedNewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_news);
 
         Intent intent=getIntent();
-        news_name=intent.getStringExtra("news_name");
-
+        news_name=intent.getStringExtra(Constants.NEWS_NAME);
+        news_link=intent.getStringExtra(Constants.NEWS_LINK);
         getSupportActionBar().hide();
         init();
     }
@@ -47,7 +48,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
             mTxtTitle.setText(news_name);
         }
         setWebView();
-        mWebView.loadUrl("http://narmware.com/");
+        mWebView.loadUrl(news_link);
 
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override

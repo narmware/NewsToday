@@ -14,5 +14,6 @@ public class MyApplication extends Application {
     public static final String URL_SERVER="http://demo.narmware.com/ash/news/wp-json/wp/v2/";
     public static final String URL_CAT_NEWS=URL_SERVER+"posts/";
     public static final String URL_NEWS_IMAGE=URL_SERVER+"media/";
+    public static final String URL_ALL_CATEGORIES=URL_SERVER+"categories";
 
 }

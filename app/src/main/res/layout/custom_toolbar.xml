@@ -28,6 +28,8 @@
         android:layout_toRightOf="@id/rltv_back"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>
