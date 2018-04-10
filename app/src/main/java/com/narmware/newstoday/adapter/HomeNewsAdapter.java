@@ -3,6 +3,7 @@ package com.narmware.newstoday.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.like.OnLikeListener;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
+import com.narmware.newstoday.helpers.Constants;
 import com.narmware.newstoday.pojo.HomeNews;
 import com.squareup.picasso.Picasso;
 
@@ -37,6 +39,7 @@ public class HomeNewsAdapter extends BaseAdapter
     @BindView(R.id.news_desc)protected MyTextView mTxtDesc;
     @BindView(R.id.news_name)protected MyTextView mTxtName;
     @BindView(R.id.news_img)protected ImageView mImgNews;
+    @BindView(R.id.news_date)protected MyTextView mTxtDate;
     @BindView(R.id.likeBtn)protected LikeButton mBtnLike;
 
     public HomeNewsAdapter(ArrayList<HomeNews> homeNews, Context mContext) {
@@ -76,16 +79,19 @@ public class HomeNewsAdapter extends BaseAdapter
 
         //mImgNews.setBackgroundColor(homeNews.get(position).getNews_color());
         mTxtTitle.setText(homeNews.get(position).getNews_title());
-        mTxtDesc.setText(homeNews.get(position).getNews_desc());
+       // mTxtDesc.setText(homeNews.get(position).getNews_desc());
         mTxtName.setText("# "+homeNews.get(position).getNews_name());
+        mTxtDate.setText(homeNews.get(position).getNews_date());
+        mTxtDesc.setText(Html.fromHtml(homeNews.get(position).getNews_desc()));
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext,homeNews.get(position).getNews_title(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,homeNews.get(position).getNews_link(),Toast.LENGTH_SHORT).show();
 
                 Intent intent=new Intent(mContext, DetailedNewsActivity.class);
-                intent.putExtra("news_name",homeNews.get(position).getNews_name());
+                intent.putExtra(Constants.NEWS_NAME,homeNews.get(position).getNews_name());
+                intent.putExtra(Constants.NEWS_LINK,homeNews.get(position).getNews_link());
                 mContext.startActivity(intent);
             }
         });

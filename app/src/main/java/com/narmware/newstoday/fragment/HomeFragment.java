@@ -1,11 +1,13 @@
 package com.narmware.newstoday.fragment;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +15,32 @@ import android.widget.Button;
 
 
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.google.gson.Gson;
+import com.narmware.newstoday.MyApplication;
 import com.narmware.newstoday.R;
+import com.narmware.newstoday.activity.Home;
 import com.narmware.newstoday.adapter.HomeNewsAdapter;
+import com.narmware.newstoday.customfonts.MyTextView;
+import com.narmware.newstoday.helpers.SupportFunctions;
+import com.narmware.newstoday.pojo.CategoryNews;
+import com.narmware.newstoday.pojo.Excpert;
+import com.narmware.newstoday.pojo.FeaturedImage;
 import com.narmware.newstoday.pojo.HomeNews;
+import com.narmware.newstoday.pojo.Title;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +71,14 @@ public class HomeFragment extends Fragment {
 
     RequestQueue mVolleyRequest;
     Dialog mNoConnectionDialog;
+    ArrayList<CategoryNews> mCategoryNews=new ArrayList<>();
+    Excpert excpert;
+    Title title;
+    String date;
+    String image_url,link;
+    ArrayList<FeaturedImage> mFeaturedImages;
+
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -94,25 +122,29 @@ public class HomeFragment extends Fragment {
 
     private void init(View view) {
         ButterKnife.bind(this,view);
-        setAdapter();
         mVolleyRequest = Volley.newRequestQueue(getContext());
+        homeNews=new ArrayList<>();
+        mFeaturedImages=new ArrayList<>();
+
+        homeNews.clear();
+        setAdapter();
+        GetCatNews();
 
     }
 
     public void setAdapter()
     {
-        homeNews=new ArrayList<>();
-        homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-HKO8qwCgBNGEdbxoW7z51BIDRd8ni1gbaJORgO8MbWX9DHRB","Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
+       /* homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-HKO8qwCgBNGEdbxoW7z51BIDRd8ni1gbaJORgO8MbWX9DHRB","Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
-                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 1"));
+                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 1",""));
         homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIlQxMDgw62pUFpwsuBaEzFDCh2773zvEdicGuhGAe2Odpw-a74Q","Vrushali completed her task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
-                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 2"));
+                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 2",""));
 
         homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKzfLd87SIls2APD7csxZhVBOb-B_VNGfnXlVJ6ufmAjPsCOmB","Suraj completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
-                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 3"));
-        HomeNewsAdapter homeNewsAdapter=new HomeNewsAdapter(homeNews,getContext());
+                "Intelligence is most widely studied in humans but has also been observed in both non-human animals and in plants. Intelligence in machines is called artificial intelligence, which is commonly implemented in computer systems using program software.","News 3",""));*/
+        homeNewsAdapter=new HomeNewsAdapter(homeNews,getContext());
         mNewsList.setAdapter(homeNewsAdapter);
     }
 
@@ -155,54 +187,69 @@ public class HomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    /*
-    private void GetSharedPhotoBook() {
+
+    private void GetCatNews() {
         final ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setMessage("getting details ...");
         dialog.setCancelable(false);
         dialog.show();
 
         HashMap<String,String> param = new HashMap();
-        param.put(Constants.USER_ID,SharedPreferencesHelper.getUserId(getContext()));
+        param.put("categories","6");
 
-        String url= SupportFunctions.appendParam(MyApplication.URL_SHARED_ALBUM,param);
+        String url= SupportFunctions.appendParam(MyApplication.URL_CAT_NEWS,param);
+        Log.e("Url",url);
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+        JsonArrayRequest obreq = new JsonArrayRequest(Request.Method.GET,url,null,
                 // The third parameter Listener overrides the method onResponse() and passes
                 //JSONObject as a parameter
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
 
                     // Takes the response from the JSON request
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
 
                         try
                         {
                             //getting test master array
                             // testMasterDetails = testMasterArray.toString();
 
-                            Log.e("sharedphoto Json_string",response.toString());
+                            Log.e("Json_string",response.toString());
                             Gson gson = new Gson();
 
-                            SharedPhotoResponse photoResponse= gson.fromJson(response.toString(), SharedPhotoResponse.class);
-                            SharedPhoto[] photo=photoResponse.getData();
-                            for(SharedPhoto item:photo)
-                            {
-                                mPhotoItems.add(item);
-                                Log.e("Featured img title",item.getPhoto_title());
-                                Log.e("Featured img size",mPhotoItems.size()+"");
+                            JSONArray jsonArray=response;
+
+                           /* for(CategoryNews item:jsonArray) {
+
+                            }*/
+
+                           mCategoryNews.clear();
+                            for(int i=0;i<jsonArray.length();i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Log.e("Json_string object", jsonObject.toString());
+
+                                CategoryNews categoryNews= gson.fromJson(jsonObject.toString(),CategoryNews.class);
+                                Log.e("Json cat id",categoryNews.getId()+"");
+
+                                mCategoryNews.add(categoryNews);
 
                             }
-                            if(mPhotoItems.size()==0)
-                            {
-                                mEmptyLinear.setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                mEmptyLinear.setVisibility(View.INVISIBLE);
-                            }
-                            mAdapter.notifyDataSetChanged();
+                            Log.e("Json cat size", mCategoryNews.size()+" ");
 
-                            // TestMasterPojo[] testMasterPojo= gson.fromJson(testMasterDetails, TestMasterPojo[].class);
+                            for(int cat=0;cat<mCategoryNews.size();cat++)
+                            {
+                                GetFeaturedImage(mCategoryNews.get(cat).getFeatured_media(),cat);
+
+                              /*  excpert = mCategoryNews.get(cat).getExcpert();
+                                title = mCategoryNews.get(cat).getTitle();
+                                date = mCategoryNews.get(cat).getDate();
+
+                                homeNews.add(new HomeNews(image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                                Log.e("Json cat data", mCategoryNews.get(cat).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(cat).getDate() + "  " + mCategoryNews.get(cat).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(cat).getFeatured_media());*/
+                            }
+
+                            homeNewsAdapter.notifyDataSetChanged();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -218,7 +265,7 @@ public class HomeFragment extends Fragment {
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Volley", "Test Error");
-                        showNoConnectionDialog();
+
                         dialog.dismiss();
 
                     }
@@ -226,8 +273,75 @@ public class HomeFragment extends Fragment {
         );
         mVolleyRequest.add(obreq);
     }
-*/
 
+    private void GetFeaturedImage(final int mediaid, final int pos) {
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setMessage("getting details ...");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        /*HashMap<String,String> param = new HashMap();
+        param.put(Constants.USER_ID,SharedPreferencesHelper.getUserId(getContext()));*/
+
+        String url= MyApplication.URL_NEWS_IMAGE+mediaid;
+        Log.e("Url",url);
+
+        final JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+                // The third parameter Listener overrides the method onResponse() and passes
+                //JSONObject as a parameter
+                new Response.Listener<JSONObject>() {
+
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try
+                        {
+                            //getting test master array
+                            // testMasterDetails = testMasterArray.toString();
+
+                            Log.e("Json_string feat. img",response.toString());
+                            Gson gson = new Gson();
+
+                                FeaturedImage featuredImage = gson.fromJson(response.toString(), FeaturedImage.class);
+                                image_url = featuredImage.getLink();
+                                mFeaturedImages.add(featuredImage);
+
+                            excpert = mCategoryNews.get(pos).getExcpert();
+                                title = mCategoryNews.get(pos).getTitle();
+                                date = mCategoryNews.get(pos).getDate();
+                                link=mCategoryNews.get(pos).getLink();
+
+                                homeNews.add(new HomeNews(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                                Log.e("Json cat data", mCategoryNews.get(pos).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(pos).getDate() + "  " + mCategoryNews.get(pos).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(pos).getFeatured_media());
+
+                                homeNewsAdapter.notifyDataSetChanged();
+
+
+                            Log.e("Json_string url", image_url);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            dialog.dismiss();
+                        }
+
+                        dialog.dismiss();
+                    }
+                },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley", "Test Error");
+                        dialog.dismiss();
+
+                    }
+                }
+        );
+        mVolleyRequest.add(obreq);
+    }
     private void showNoConnectionDialog() {
         mNoConnectionDialog = new Dialog(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         mNoConnectionDialog.setContentView(R.layout.dialog_noconnectivity);

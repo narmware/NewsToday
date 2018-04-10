@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <com.narmware.newstoday.customfonts.MyTextView
+    android:id="@+id/news_name"
     android:text="# News Name"
     android:background="@color/red_500"
     android:textColor="@android:color/white"

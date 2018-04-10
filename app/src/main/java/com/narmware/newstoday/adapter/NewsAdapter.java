@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
+import com.narmware.newstoday.helpers.Constants;
 import com.narmware.newstoday.pojo.News;
 import com.squareup.picasso.Picasso;
 
@@ -30,7 +32,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
     protected Dialog mNoConnectionDialog;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public MyTextView mthumb_title,mthumb_Desc;
+        public MyTextView mthumb_title,mthumb_Desc,mthumb_date,mthumb_name;
        ImageView mImgFrame;
         News mItem;
 
@@ -40,14 +42,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             mthumb_title= view.findViewById(R.id.news_title);
             mthumb_Desc= view.findViewById(R.id.news_desc);
             mImgFrame=view.findViewById(R.id.news_img);
+            mthumb_date=view.findViewById(R.id.news_date);
+            mthumb_name=view.findViewById(R.id.news_name);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Toast.makeText(mContext, mItem.getNews_title(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(mContext, mItem.getNews_link(), Toast.LENGTH_SHORT).show();
 
                     Intent intent=new Intent(mContext, DetailedNewsActivity.class);
-                    intent.putExtra("news_name","News name");
+                    intent.putExtra(Constants.NEWS_NAME,mItem.getNews_name());
+                    intent.putExtra(Constants.NEWS_LINK,mItem.getNews_link());
                     mContext.startActivity(intent);
                 }
             });
@@ -80,7 +85,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
                 .into(holder.mImgFrame);
         //holder.mImgFrame.setBackgroundColor(frame.getNews_color());
         holder.mthumb_title.setText(frame.getNews_title());
-        holder.mthumb_Desc.setText(frame.getNews_desc());
+        holder.mthumb_Desc.setText(Html.fromHtml(frame.getNews_desc()));
+        holder.mthumb_date.setText(frame.getNews_date());
+        holder.mthumb_name.setText("# "+frame.getNews_name());
         holder.mItem=frame;
     }
 

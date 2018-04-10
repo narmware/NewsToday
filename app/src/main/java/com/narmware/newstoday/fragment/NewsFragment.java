@@ -1,6 +1,7 @@
 package com.narmware.newstoday.fragment;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,18 +12,36 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.narmware.newstoday.MyApplication;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.NewsAdapter;
+import com.narmware.newstoday.helpers.SupportFunctions;
+import com.narmware.newstoday.pojo.CategoryNews;
+import com.narmware.newstoday.pojo.Excpert;
+import com.narmware.newstoday.pojo.FeaturedImage;
+import com.narmware.newstoday.pojo.HomeNews;
 import com.narmware.newstoday.pojo.News;
+import com.narmware.newstoday.pojo.Title;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,7 +66,12 @@ public class NewsFragment extends Fragment {
     RecyclerView mRecyclerView;
     RequestQueue mVolleyRequest;
     Dialog mNoConnectionDialog;
-
+    ArrayList<CategoryNews> mCategoryNews=new ArrayList<>();
+    Excpert excpert;
+    Title title;
+    String date;
+    String image_url,link;
+    ArrayList<FeaturedImage> mFeaturedImages=new ArrayList<>();
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -83,22 +107,22 @@ public class NewsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_news, container, false);
         setAdapter(view);
         mVolleyRequest = Volley.newRequestQueue(getContext());
-
+        GetCatNews();
         return view;
     }
 
     public void setAdapter(View v){
         news=new ArrayList<>();
-        if(mId==1) {
-            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_xf1FJ_OnwOSJqN1wY397SLNAr70HWo7oEGHdEi0Q1__A5SgV9g", "This is first news", "This is first news"));
-            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXDoUVQJUZsdOsPoxGyrTfeo-IeHmotP1gxXWcfiLwHhJAI8o", "This is second news", "This is second news"));
+       /* if(mId==1) {
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_xf1FJ_OnwOSJqN1wY397SLNAr70HWo7oEGHdEi0Q1__A5SgV9g", "This is first news", "This is first news","",""));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXDoUVQJUZsdOsPoxGyrTfeo-IeHmotP1gxXWcfiLwHhJAI8o", "This is second news", "This is second news","",""));
         }
         if(mId==2) {
-            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTObyPteqcWpkYDatiuFWmIW13HjBcAG6fMVm3YrRxmmx39OoPAvA", "This is Football news", "This is Football news"));
-            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8ooOXgDLIyC7afHFzsa0CUBTcKodY3Lr_yaYdODAB-0-Dxcc56g", "This is cricket news", "This is cricket news"));
-            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTObyPteqcWpkYDatiuFWmIW13HjBcAG6fMVm3YrRxmmx39OoPAvA", "This is Football news", "This is Football news"));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTObyPteqcWpkYDatiuFWmIW13HjBcAG6fMVm3YrRxmmx39OoPAvA", "This is Football news", "This is Football news","",""));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8ooOXgDLIyC7afHFzsa0CUBTcKodY3Lr_yaYdODAB-0-Dxcc56g", "This is cricket news", "This is cricket news","",""));
+            news.add(new News("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTObyPteqcWpkYDatiuFWmIW13HjBcAG6fMVm3YrRxmmx39OoPAvA", "This is Football news", "This is Football news","",""));
 
-        }
+        }*/
 
         SnapHelper snapHelper = new LinearSnapHelper();
         mRecyclerView = v.findViewById(R.id.recyclerview);
@@ -199,54 +223,67 @@ public class NewsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-/*
-    private void GetSharedPhotoBook() {
+    private void GetCatNews() {
         final ProgressDialog dialog = new ProgressDialog(getContext());
-        dialog.setMessage("getting details ...");
+        dialog.setMessage("getting News ...");
         dialog.setCancelable(false);
         dialog.show();
 
         HashMap<String,String> param = new HashMap();
-        param.put(Constants.USER_ID,SharedPreferencesHelper.getUserId(getContext()));
+        param.put("categories", String.valueOf(mId));
 
-        String url= SupportFunctions.appendParam(MyApplication.URL_SHARED_ALBUM,param);
+        String url= SupportFunctions.appendParam(MyApplication.URL_CAT_NEWS,param);
+        Log.e("Url",url);
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+        JsonArrayRequest obreq = new JsonArrayRequest(Request.Method.GET,url,null,
                 // The third parameter Listener overrides the method onResponse() and passes
                 //JSONObject as a parameter
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
 
                     // Takes the response from the JSON request
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
 
                         try
                         {
                             //getting test master array
                             // testMasterDetails = testMasterArray.toString();
 
-                            Log.e("sharedphoto Json_string",response.toString());
+                            Log.e("Json_string",response.toString());
                             Gson gson = new Gson();
 
-                            SharedPhotoResponse photoResponse= gson.fromJson(response.toString(), SharedPhotoResponse.class);
-                            SharedPhoto[] photo=photoResponse.getData();
-                            for(SharedPhoto item:photo)
-                            {
-                                mPhotoItems.add(item);
-                                Log.e("Featured img title",item.getPhoto_title());
-                                Log.e("Featured img size",mPhotoItems.size()+"");
+                            JSONArray jsonArray=response;
+
+                           /* for(CategoryNews item:jsonArray) {
+
+                            }*/
+                            mCategoryNews.clear();
+                            for(int i=0;i<jsonArray.length();i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Log.e("Json_string object", jsonObject.toString());
+
+                                CategoryNews categoryNews= gson.fromJson(jsonObject.toString(),CategoryNews.class);
+                                Log.e("Json cat id",categoryNews.getId()+"");
+
+                                mCategoryNews.add(categoryNews);
 
                             }
-                            if(mPhotoItems.size()==0)
-                            {
-                                mEmptyLinear.setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                mEmptyLinear.setVisibility(View.INVISIBLE);
-                            }
-                            mAdapter.notifyDataSetChanged();
+                            Log.e("Json cat size", mCategoryNews.size()+" ");
 
-                            // TestMasterPojo[] testMasterPojo= gson.fromJson(testMasterDetails, TestMasterPojo[].class);
+                            for(int cat=0;cat<mCategoryNews.size();cat++)
+                            {
+                                GetFeaturedImage(mCategoryNews.get(cat).getFeatured_media(),cat);
+
+                              /*  excpert = mCategoryNews.get(cat).getExcpert();
+                                title = mCategoryNews.get(cat).getTitle();
+                                date = mCategoryNews.get(cat).getDate();
+
+                                news.add(new HomeNews(image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                                Log.e("Json cat data", mCategoryNews.get(cat).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(cat).getDate() + "  " + mCategoryNews.get(cat).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(cat).getFeatured_media());*/
+                            }
+
+                            newsAdapter.notifyDataSetChanged();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -262,7 +299,7 @@ public class NewsFragment extends Fragment {
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Volley", "Test Error");
-                        showNoConnectionDialog();
+
                         dialog.dismiss();
 
                     }
@@ -270,33 +307,74 @@ public class NewsFragment extends Fragment {
         );
         mVolleyRequest.add(obreq);
     }
-*/
 
-    private void showNoConnectionDialog() {
-        mNoConnectionDialog = new Dialog(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
-        mNoConnectionDialog.setContentView(R.layout.dialog_noconnectivity);
-        mNoConnectionDialog.setCancelable(false);
-        mNoConnectionDialog.show();
+    private void GetFeaturedImage(final int mediaid, final int pos) {
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setMessage("getting details ...");
+        dialog.setCancelable(false);
+        //dialog.show();
 
-        Button exit = mNoConnectionDialog.findViewById(R.id.dialog_no_connec_exit);
-        Button tryAgain = mNoConnectionDialog.findViewById(R.id.dialog_no_connec_try_again);
+        /*HashMap<String,String> param = new HashMap();
+        param.put(Constants.USER_ID,SharedPreferencesHelper.getUserId(getContext()));*/
 
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AppCompatActivity act = (AppCompatActivity) getContext();
-                act.finish();
-            }
-        });
+        String url= MyApplication.URL_NEWS_IMAGE+mediaid;
+        Log.e("Url",url);
 
-        tryAgain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        final JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+                // The third parameter Listener overrides the method onResponse() and passes
+                //JSONObject as a parameter
+                new Response.Listener<JSONObject>() {
 
-                mNoConnectionDialog.dismiss();
-            }
-        });
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try
+                        {
+                            //getting test master array
+                            // testMasterDetails = testMasterArray.toString();
+
+                            Log.e("Json_string feat. img",response.toString());
+                            Gson gson = new Gson();
+
+                            FeaturedImage featuredImage = gson.fromJson(response.toString(), FeaturedImage.class);
+                            image_url = featuredImage.getLink();
+                            mFeaturedImages.add(featuredImage);
+
+                            excpert = mCategoryNews.get(pos).getExcpert();
+                            title = mCategoryNews.get(pos).getTitle();
+                            date = mCategoryNews.get(pos).getDate();
+                            link=mCategoryNews.get(pos).getLink();
+
+                            news.add(new News(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                            Log.e("Json cat data", mCategoryNews.get(pos).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(pos).getDate() + "  " + mCategoryNews.get(pos).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(pos).getFeatured_media());
+
+                            newsAdapter.notifyDataSetChanged();
+
+
+                            Log.e("Json_string url", image_url);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            //dialog.dismiss();
+                        }
+
+                        //dialog.dismiss();
+                    }
+                },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley", "Test Error");
+                       // dialog.dismiss();
+
+                    }
+                }
+        );
+        mVolleyRequest.add(obreq);
     }
-
 }
 

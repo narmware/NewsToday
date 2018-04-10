@@ -59,25 +59,18 @@ public class HomeMenuAdapter extends BaseAdapter
         mTextView.setText(mMenuList.get(position).getTitle());
         mImageView.setImageResource(mMenuList.get(position).getImage());
 
-<<<<<<< HEAD
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Home.drawer.closeDrawer(GravityCompat.START);
-            }
-        });
-=======
+
        rowView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
 
-               Toast.makeText(mContext,"You Clicked"+mMenuList.get(position).getTitle(),Toast.LENGTH_LONG).show();
-
+               //Toast.makeText(mContext,"You Clicked"+position,Toast.LENGTH_LONG).show();
+               Home.drawer.closeDrawer(GravityCompat.START);
+               Home.viewPager.setCurrentItem(position);
 
            }
        });
 
->>>>>>> 4ed90e255b757ce55134a3c0853da829b3572368
         return rowView;
 
     }

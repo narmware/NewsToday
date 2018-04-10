@@ -6,5 +6,7 @@ package com.narmware.newstoday.helpers;
 
 public class Constants {
     public static final String GALLERY_TITLE="gallery_title";
+    public static final String NEWS_NAME="news_name";
+    public static final String NEWS_LINK="news_link";
 
 }
