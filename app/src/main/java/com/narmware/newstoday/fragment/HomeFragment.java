@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
@@ -29,8 +31,10 @@ import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.Home;
 import com.narmware.newstoday.adapter.HomeNewsAdapter;
 import com.narmware.newstoday.customfonts.MyTextView;
+import com.narmware.newstoday.db.DatabaseAccess;
 import com.narmware.newstoday.helpers.SupportFunctions;
 import com.narmware.newstoday.pojo.CategoryNews;
+import com.narmware.newstoday.pojo.Content;
 import com.narmware.newstoday.pojo.Excpert;
 import com.narmware.newstoday.pojo.FeaturedImage;
 import com.narmware.newstoday.pojo.HomeNews;
@@ -41,6 +45,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,9 +79,12 @@ public class HomeFragment extends Fragment {
     ArrayList<CategoryNews> mCategoryNews=new ArrayList<>();
     Excpert excpert;
     Title title;
+    Content content;
     String date;
     String image_url,link;
     ArrayList<FeaturedImage> mFeaturedImages;
+    DatabaseAccess databaseAccess;
+    ArrayList<HomeNews> newslist=new ArrayList<>();
 
 
     public HomeFragment() {
@@ -123,16 +131,51 @@ public class HomeFragment extends Fragment {
     private void init(View view) {
         ButterKnife.bind(this,view);
         mVolleyRequest = Volley.newRequestQueue(getContext());
+        databaseAccess = DatabaseAccess.getInstance(getContext());
+        databaseAccess.open();
         homeNews=new ArrayList<>();
         mFeaturedImages=new ArrayList<>();
-
-        homeNews.clear();
+         ListView listView;
+         homeNews.clear();
         setAdapter();
-        GetCatNews();
+        //GetCatNews();
+      //newslist= databaseAccess.Details();
+        ChkData();
+        init();
+
+        }
+
+
+    public void ChkData()
+    {
+        if(newslist.size()==0) {
+            Toast.makeText(getContext(), "size" + newslist.size(), Toast.LENGTH_LONG).show();
+            GetCatNews();
+
+            homeNewsAdapter.notifyDataSetChanged();
+
+        }
+    }
+
+
+    public void  init()
+    {
+       newslist= databaseAccess.Details();
+        int i;
+        for(i=0;i<newslist.size();i++)
+        {
+            Log.d("data",newslist.get(i).getNews_title()+newslist.get(i).getNews_link());
+
+            homeNews.add(new HomeNews(newslist.get(i).getNews_link(),newslist.get(i).getImg_path(),newslist.get(i).getNews_title(),newslist.get(i).getNews_desc(),newslist.get(i).getNews_name(),newslist.get(i).getNews_date(),newslist.get(i).getNews_content()));
+
+        }
+        homeNewsAdapter.notifyDataSetChanged();
+
 
     }
 
-    public void setAdapter()
+
+            public void setAdapter()
     {
        /* homeNews.add(new HomeNews("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-HKO8qwCgBNGEdbxoW7z51BIDRd8ni1gbaJORgO8MbWX9DHRB","Rohit completed his task in just 2 seconds.","Intelligence has been defined in many different ways including as one's capacity for logic, understanding, self-awareness, learning, emotional knowledge, reasoning, planning, creativity, and problem solving. It can be more generally described as the ability to perceive or infer information, and to retain it as knowledge to be applied towards adaptive behaviors within an environment or context.\n" +
                 "\n" +
@@ -214,7 +257,7 @@ public class HomeFragment extends Fragment {
                             //getting test master array
                             // testMasterDetails = testMasterArray.toString();
 
-                            Log.e("Json_string",response.toString());
+                            Log.d("homeJson_string",response.toString());
                             Gson gson = new Gson();
 
                             JSONArray jsonArray=response;
@@ -311,11 +354,17 @@ public class HomeFragment extends Fragment {
                                 title = mCategoryNews.get(pos).getTitle();
                                 date = mCategoryNews.get(pos).getDate();
                                 link=mCategoryNews.get(pos).getLink();
+                              content=mCategoryNews.get(pos).getContent();
 
-                                homeNews.add(new HomeNews(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                              Log.d("con",content.getRendered());
+
+                                databaseAccess.setData(link,image_url,title.getRendered(),excpert.getRendered(),title.getRendered(),date,content.getRendered());
+                           // databaseAccess.close();
+
+                              //  homeNews.add(new HomeNews(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
                                 Log.e("Json cat data", mCategoryNews.get(pos).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(pos).getDate() + "  " + mCategoryNews.get(pos).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(pos).getFeatured_media());
 
-                                homeNewsAdapter.notifyDataSetChanged();
+                               // homeNewsAdapter.notifyDataSetChanged();
 
 
                             Log.e("Json_string url", image_url);

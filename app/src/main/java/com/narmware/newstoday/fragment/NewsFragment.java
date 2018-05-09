@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,8 +31,10 @@ import com.google.gson.Gson;
 import com.narmware.newstoday.MyApplication;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.NewsAdapter;
+import com.narmware.newstoday.db.DatabaseAccess;
 import com.narmware.newstoday.helpers.SupportFunctions;
 import com.narmware.newstoday.pojo.CategoryNews;
+import com.narmware.newstoday.pojo.Content;
 import com.narmware.newstoday.pojo.Excpert;
 import com.narmware.newstoday.pojo.FeaturedImage;
 import com.narmware.newstoday.pojo.HomeNews;
@@ -70,8 +74,14 @@ public class NewsFragment extends Fragment {
     Excpert excpert;
     Title title;
     String date;
+    Content content;
     String image_url,link;
     ArrayList<FeaturedImage> mFeaturedImages=new ArrayList<>();
+    DatabaseAccess databaseAccess;
+    ArrayList<News> list;
+
+
+
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -92,12 +102,15 @@ public class NewsFragment extends Fragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mId = getArguments().getInt(NEWS_ID);
-        }
+
+            }
     }
 
     @Override
@@ -106,10 +119,48 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_news, container, false);
         setAdapter(view);
+
+        databaseAccess=new DatabaseAccess(getContext());
+        databaseAccess.open();
         mVolleyRequest = Volley.newRequestQueue(getContext());
-        GetCatNews();
+
+
+        list= databaseAccess.getOtherNews(mId);
+       //GetCatNews();
+      ChkData();
+        init();
+
         return view;
     }
+
+    public void ChkData()
+    {
+        if(list.size()==0)
+        {
+            Toast.makeText(getContext(),"size"+list.size(), Toast.LENGTH_LONG).show();
+
+            GetCatNews();
+
+            newsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void init()
+    {
+
+        int i;
+        news.clear();
+        for(i=0;i<list.size();i++)
+        { Log.d("sec",list.get(i).getNews_name()+list.get(i).getId());
+
+            news.add(new News(list.get(i).getNews_link(),list.get(i).getImg_path(),list.get(i).getNews_title(),list.get(i).getNews_desc(),list.get(i).getNews_name(),list.get(i).getNews_date(),list.get(i).getId(),list.get(i).getNews_content()));
+
+        }
+       newsAdapter.notifyDataSetChanged();
+
+
+    }
+
 
     public void setAdapter(View v){
         news=new ArrayList<>();
@@ -258,6 +309,7 @@ public class NewsFragment extends Fragment {
 
                             }*/
                             mCategoryNews.clear();
+
                             for(int i=0;i<jsonArray.length();i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -266,10 +318,15 @@ public class NewsFragment extends Fragment {
                                 CategoryNews categoryNews= gson.fromJson(jsonObject.toString(),CategoryNews.class);
                                 Log.e("Json cat id",categoryNews.getId()+"");
 
+
                                 mCategoryNews.add(categoryNews);
 
                             }
                             Log.e("Json cat size", mCategoryNews.size()+" ");
+
+
+
+
 
                             for(int cat=0;cat<mCategoryNews.size();cat++)
                             {
@@ -345,11 +402,15 @@ public class NewsFragment extends Fragment {
                             title = mCategoryNews.get(pos).getTitle();
                             date = mCategoryNews.get(pos).getDate();
                             link=mCategoryNews.get(pos).getLink();
+                            content=mCategoryNews.get(pos).getContent();
 
-                            news.add(new News(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
+                           // Log.d("mid",mId+"");
+                            databaseAccess.setOtherNews(link,image_url,title.getRendered(),excpert.getRendered(),title.getRendered(),date,mId,content.getRendered());
+
+                           // news.add(new News(link,image_url, title.getRendered(), excpert.getRendered(), title.getRendered(), date));
                             Log.e("Json cat data", mCategoryNews.get(pos).getId() + "  " + title.getRendered() + "  " + mCategoryNews.get(pos).getDate() + "  " + mCategoryNews.get(pos).getSlug() + "  " + excpert.getRendered() + "  " + mCategoryNews.get(pos).getFeatured_media());
 
-                            newsAdapter.notifyDataSetChanged();
+                            //newsAdapter.notifyDataSetChanged();
 
 
                             Log.e("Json_string url", image_url);

@@ -6,17 +6,28 @@ package com.narmware.newstoday.pojo;
 
 public class HomeNews {
     int news_color;
-    String news_title,news_desc,news_name,img_path,news_date,news_link;
+    String news_title,news_desc,news_name,img_path,news_date,news_link,news_content;
 
-    public HomeNews(String news_link,String img_path, String news_title, String news_desc,String news_name,String news_date) {
+    public HomeNews(String news_link,String img_path, String news_title, String news_desc,String news_name,String news_date,String news_content) {
         this.img_path = img_path;
         this.news_title = news_title;
         this.news_desc = news_desc;
         this.news_name=news_name;
         this.news_date=news_date;
         this.news_link=news_link;
+        this.news_content=news_content;
+
 
     }
+
+    public String getNews_content() {
+        return news_content;
+    }
+
+    public void setNews_content(String news_content) {
+        this.news_content = news_content;
+    }
+
 
     public String getNews_link() {
         return news_link;

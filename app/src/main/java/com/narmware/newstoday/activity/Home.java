@@ -1,6 +1,7 @@
 package com.narmware.newstoday.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -28,6 +29,7 @@ import com.narmware.newstoday.MyApplication;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.adapter.HomeFragmentPagerAdapter;
 
+import com.narmware.newstoday.db.DatabaseAccess;
 import com.narmware.newstoday.fragment.HomeFragment;
 import com.narmware.newstoday.fragment.MainFragment;
 import com.narmware.newstoday.fragment.NewsFragment;
@@ -50,7 +52,7 @@ public class Home extends AppCompatActivity
 
 
   private  ListView mListView;
-    private ArrayList<HomeMenu> mMenuList =new ArrayList<>();
+    public ArrayList<HomeMenu> mMenuList =new ArrayList<>();
    public static DrawerLayout drawer;
     public static ViewPager viewPager;
     RequestQueue mVolleyRequest;
@@ -58,15 +60,26 @@ public class Home extends AppCompatActivity
     HomeFragmentPagerAdapter tabAdapter;
     TabLayout tabLayout;
     HomeMenuAdapter homeMenuAdapter;
+    DatabaseAccess databaseAccess;
+    ArrayList<Category> list;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+
+
+         databaseAccess=new DatabaseAccess(this);
+        databaseAccess.open();
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mVolleyRequest = Volley.newRequestQueue(Home.this);
 
-        GetAllCategories();
+        //GetAllCategories();
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -96,9 +109,43 @@ public class Home extends AppCompatActivity
         homeMenuAdapter=new HomeMenuAdapter(this,mMenuList);
         mListView=findViewById(R.id.mListView);
         mListView.setAdapter(homeMenuAdapter);
-    }
 
-    @Override
+       list = databaseAccess.CatDetails();
+      ChkCatList();
+
+
+            int i;
+            for (i = 0; i < list.size(); i++) {
+                Log.d("cat", list.get(i).getName() + list.get(i).getId());
+                if (list.get(i).getCount() != 0) {
+
+                    tabAdapter.addFragment(NewsFragment.newInstance(list.get(i).getId()), list.get(i).getName());
+
+                    HomeMenu homeMenu = new HomeMenu(list.get(i).getName(), R.drawable.ic_menu_gallery);
+                    mMenuList.add(homeMenu);
+                }
+
+
+            }
+
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabAdapter.notifyDataSetChanged();
+        homeMenuAdapter.notifyDataSetChanged();
+
+        }
+
+
+        public void ChkCatList()
+        {
+            if(list.size()==0)
+            {
+                GetAllCategories();
+            }
+
+        }
+
+
+        @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -159,7 +206,7 @@ public class Home extends AppCompatActivity
 
     }
 
-    private void GetAllCategories() {
+    public void GetAllCategories() {
         final ProgressDialog dialog = new ProgressDialog(Home.this);
         dialog.setMessage("getting details ...");
         dialog.setCancelable(false);
@@ -199,16 +246,23 @@ public class Home extends AppCompatActivity
                                 Category category= gson.fromJson(jsonObject.toString(),Category.class);
                                 Log.e("Json Category",category.getName()+"");
 
-                                if(category.getCount()!=0) {
+
+                              //to stored categories into local database
+
+
+                                databaseAccess.setNewsCategoris(category.getId(),category.getCount(),category.getName());
+
+                               /* if(category.getCount()!=0) {
+
                                     tabAdapter.addFragment(NewsFragment.newInstance(category.getId()), category.getName());
 
                                     HomeMenu homeMenu = new HomeMenu(category.getName(), R.drawable.ic_menu_gallery);
                                     mMenuList.add(homeMenu);
-                                }
+                                }*/
                             }
-                            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-                            tabAdapter.notifyDataSetChanged();
-                            homeMenuAdapter.notifyDataSetChanged();
+                           // tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+                            /*tabAdapter.notifyDataSetChanged();
+                            homeMenuAdapter.notifyDataSetChanged();*/
                         } catch (Exception e) {
                             e.printStackTrace();
                             //dialog.dismiss();

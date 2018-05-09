@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.narmware.newstoday.R;
 import com.narmware.newstoday.activity.DetailedNewsActivity;
 import com.narmware.newstoday.customfonts.MyTextView;
 import com.narmware.newstoday.helpers.Constants;
 import com.narmware.newstoday.pojo.News;
 import com.squareup.picasso.Picasso;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.List;
 
@@ -32,7 +35,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
     protected Dialog mNoConnectionDialog;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public MyTextView mthumb_title,mthumb_Desc,mthumb_date,mthumb_name;
+        public MyTextView mthumb_title,mthumb_date,mthumb_name;
+        public HtmlTextView mthumb_Desc;
        ImageView mImgFrame;
         News mItem;
 
@@ -66,8 +70,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_news, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -77,15 +80,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         News frame = news.get(position);
 
 
-        Picasso.with(mContext)
+        Glide.with(mContext)
                 .load(frame.getImg_path())
-                .fit()
+               /* .fit()
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_background)*/
                 .into(holder.mImgFrame);
         //holder.mImgFrame.setBackgroundColor(frame.getNews_color());
         holder.mthumb_title.setText(frame.getNews_title());
-        holder.mthumb_Desc.setText(Html.fromHtml(frame.getNews_desc()));
+        holder.mthumb_Desc.setHtml(frame.getNews_desc());
         holder.mthumb_date.setText(frame.getNews_date());
         holder.mthumb_name.setText("# "+frame.getNews_name());
         holder.mItem=frame;

@@ -8,6 +8,12 @@ public class Category {
     int id,count;
     String name;
 
+    public Category(int id, int count, String name) {
+        this.id = id;
+        this.count = count;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

@@ -3,13 +3,22 @@ package com.narmware.newstoday.pojo;
 /**
  * Created by rohitsavant on 06/04/18.
  */
-
+//filds from json
 public class CategoryNews {
     int id;
     int featured_media;
     String date,slug,link;
     Excpert excerpt;
     Title title;
+    Content content;
+
+    public Content getContent() {
+        return content;
+    }
+
+    public void setContent(Content content) {
+        this.content = content;
+    }
 
     public int getId() {
         return id;

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
+import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.narmware.newstoday.R;
@@ -20,6 +22,8 @@ import com.narmware.newstoday.customfonts.MyTextView;
 import com.narmware.newstoday.helpers.Constants;
 import com.narmware.newstoday.pojo.HomeNews;
 import com.squareup.picasso.Picasso;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 
@@ -36,7 +40,7 @@ public class HomeNewsAdapter extends BaseAdapter
     ArrayList<HomeNews> homeNews;
     Context mContext;
     @BindView(R.id.news_title)protected MyTextView mTxtTitle;
-    @BindView(R.id.news_desc)protected MyTextView mTxtDesc;
+    @BindView(R.id.news_desc)protected HtmlTextView mTxtDesc;
     @BindView(R.id.news_name)protected MyTextView mTxtName;
     @BindView(R.id.news_img)protected ImageView mImgNews;
     @BindView(R.id.news_date)protected MyTextView mTxtDate;
@@ -70,29 +74,38 @@ public class HomeNewsAdapter extends BaseAdapter
 
         final MyTextView mTxtLike=itemView.findViewById(R.id.txt_like);
 
-          Picasso.with(mContext)
+          Glide.with(mContext)
                 .load(homeNews.get(position).getImg_path())
-                .fit()
+                /*.fit()
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_launcher_background)*/
                 .into(mImgNews);
-
-        //mImgNews.setBackgroundColor(homeNews.get(position).getNews_color());
-        mTxtTitle.setText(homeNews.get(position).getNews_title());
-       // mTxtDesc.setText(homeNews.get(position).getNews_desc());
-        mTxtName.setText("# "+homeNews.get(position).getNews_name());
-        mTxtDate.setText(homeNews.get(position).getNews_date());
-        mTxtDesc.setText(Html.fromHtml(homeNews.get(position).getNews_desc()));
+try {
+    //mImgNews.setBackgroundColor(homeNews.get(position).getNews_color());
+    mTxtTitle.setText(homeNews.get(position).getNews_title());
+    // mTxtDesc.setText(homeNews.get(position).getNews_desc());
+    mTxtName.setText("# " + homeNews.get(position).getNews_name());
+    mTxtDate.setText(homeNews.get(position).getNews_date());
+   // mTxtDesc.setText(homeNews.get(position).getNews_desc());
+    mTxtDesc.setHtml(homeNews.get(position).getNews_desc());
+}catch(Exception e)
+{
+    e.printStackTrace();
+}
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(mContext,homeNews.get(position).getNews_link(),Toast.LENGTH_SHORT).show();
+                Log.d("condata",homeNews.get(position).getNews_content());
+
 
                 Intent intent=new Intent(mContext, DetailedNewsActivity.class);
                 intent.putExtra(Constants.NEWS_NAME,homeNews.get(position).getNews_name());
                 intent.putExtra(Constants.NEWS_LINK,homeNews.get(position).getNews_link());
+
                 mContext.startActivity(intent);
+
             }
         });
 
